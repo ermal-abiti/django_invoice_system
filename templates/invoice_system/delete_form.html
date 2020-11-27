@@ -1,0 +1,19 @@
+{% extends '../base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Delete Form{% endblock %}
+
+
+{% block content %}
+
+<form method="post" class="form-group"> {% csrf_token %}
+    <h1>Are you sure that you want to remove: {{ object.pk }}</h1>
+    <button class="btn btn-danger">Delete</button>
+    {% if 'produkt' in request.path %}
+    <a href="{% url 'produkt_detail_url' object.pk %}" class="btn btn-dark">Cancel</a>
+    {% else %}
+    {% endif %}
+</form>
+
+{% endblock %}

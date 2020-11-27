@@ -1,0 +1,22 @@
+{% extends '../base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Fletpercjellja{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-between">
+	<h2>Fletpercjelljet</h2>
+	<a href="{% url 'fletpercjellja_create_url' %}" class="btn-lg btn-primary">+</a>
+</div>
+<hr>
+<ul>
+{% for fletpercjellja in fletpercjelliet %}
+	<li><a href="{% url 'fletpercjellja_detail_url' fletpercjellja.fletpercjellja_id %}">{{ fletpercjellja.fletpercjellja_id }} - {{ fletpercjellja.fletpercjellja_data | date:"d/m/Y" }}</a></li>
+{% endfor %}
+</ul>
+
+
+{% endblock %} 

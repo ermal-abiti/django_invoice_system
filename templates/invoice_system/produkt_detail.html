@@ -1,0 +1,112 @@
+{% extends '../base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Produkti : {{ object.product_id }}{% endblock %}
+
+
+{% block content %}
+
+<form method="POST" id="select-form" class="form-group">{% csrf_token %}
+	<select id="select" placeholder="Select a product" name="product" class="" onchange="this.form.submit()">
+		<option value="">Select a product...</option>
+		{% for produkt in produktet %}
+		{% if produkt.product_id == object.product_id %}
+			<option value="{{ produkt.product_id }}">{{ produkt.product_id }}</option>
+		{% else %}
+			<option value="{{ produkt.product_id }}">{{ produkt.product_id }}</option>
+		{% endif %}
+		{% endfor %}
+	  
+	</select>
+</form>
+
+<hr>
+
+<div class="d-flex">
+	<h1 class="mr-auto p-2">{{ object.product_id }}</h1>
+	<div class="p-2">
+		<div class="btn-group btn-group-sm">
+			<a href="{% url 'produkt_update_url' object.product_id %}" class="btn btn-warning">Update</a>
+			<a href="{% url 'produkt_delete_url' object.product_id %}" class="btn btn-danger">Delete</a>
+		</div>
+	</div>
+	
+</div>
+
+<hr>
+
+<table class="table">
+	<tr class="table-secondary">
+		<td>Produkti:</td>
+		<td><b>{{ object.product_name }} {{ object.product_desc }}</b></td>
+	</tr>
+
+	<tr class="table-warning">
+		<td>Cmimi Shites:</td>
+		<td><b>{{ object.product_price }} €</b></td>
+	</tr>
+
+	<tr>
+		<td></td>
+		<td></td>
+	</tr>
+
+	<tr>
+		<td>Njesia</td>
+		<td><span class="badge badge-secondary">{{ object.product_unit }}</span></td>
+	</tr>
+	<tr>
+		<td>Hyrje:</td>
+		<td><b class="badge badge-success">{{ object.hyrje.normalize }}</b></td>
+	</tr>
+
+	<tr>
+		<td>Dalje:</td>
+		<td><b class="badge badge-danger">{{ object.dalje.normalize }}</b></td>
+	</tr>
+
+	<tr>
+		<td>Sasia e mbetur:</td>
+		<td><b class="badge badge-primary">{{ object.quantity.normalize }}</b></td>
+	</tr>
+</table>
+
+<br> <br>
+
+<br><br>
+
+<h2>Shitjet</h2>
+<hr>
+<table class="table table-striped">
+	<tr class="table-primary">
+			<th>Fletpercjellja ID</th>
+			<th>Emri Artikullit</th>
+			<th>Pershkrimi</th>
+			<th>Sasia</th>
+			<th>Cmimi</th>
+			<th>Totali</th>
+	</tr>
+	{% for shitja in shitjet %}
+	<tr>
+		<td><a href="{% url 'fletpercjellja_detail_url' shitja.fletpercjellja.fletpercjellja_id %}">{{ shitja.fletpercjellja }}</a></td>
+		<td>{{ shitja.product.product_name }}</td>
+		<td>{{ shitja.product.product_desc }}</td>
+		<td>{{ shitja.shitje_quantity.normalize }} Copë</td>
+		<td>{{ shitja.shitje_price }} €</td>
+		<td><b>{{ shitja.totali }} €</b></td>
+	</tr>
+
+	{% endfor %}
+</table>
+
+<script>
+	$(document).ready(function () {
+		$('select').selectize({
+			sortField: 'text'
+	  	});
+	});	
+</script>
+
+
+{% endblock %} 

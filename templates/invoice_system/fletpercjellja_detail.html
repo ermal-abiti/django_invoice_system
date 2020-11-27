@@ -1,0 +1,92 @@
+{% extends '../base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Fletpercjellja: {{ fletpercjellja.fletpercjellja_id }}{% endblock %}
+
+
+{% block content %}
+<form method="POST"> {% csrf_token %}
+	{{ search_form|crispy }}
+	<button class="btn btn-success">Get</button>
+</form>
+
+<hr>
+<div class="d-flex justify-content-between">
+	{% if previous %}
+	<div><- <a href="{% url 'fletpercjellja_detail_url' previous.pk %}">{{ previous.pk }}</a> </div>
+	{% else %}
+	<div></div>
+	{% endif %}
+	
+	
+	{% if next %}
+	<div><a href="{% url 'fletpercjellja_detail_url' next.pk %}">{{ next.pk }}</a> -></div>
+	{% endif %}
+</div>
+<hr>
+<h1><span class="text-muted">Fletepercjellja </span> <span class="badge badge-danger">{{ fletpercjellja.fletpercjellja_id }}</span></h1>
+<hr>
+<h5><span class="text-muted">Data: </span>{{ fletpercjellja.fletpercjellja_data }}</h5>
+<br>
+{% if fletpercjellja.fletpercjellja_verejtje != '' %}
+<h5><span class="text-muted text-danger">Verejtje: </span>{{ fletpercjellja.fletpercjellja_verejtje }}</h5>
+<br>
+{% endif %}
+<h3><span class="text-muted">Totali: </span> <b class="badge badge-success">{{ fletpercjellja.get_total }}</b></h3>
+<br>
+
+
+<table class="table table-striped">
+	<tr class="table-primary">
+			<th>Artikulli ID</th>
+			<th>Emri Artikullit</th>
+			<th>Pershkrimi</th>
+			<th>Sasia</th>
+			<th>(Njesia)</th>
+			<th>Cmimi</th>
+			<th>Totali</th>
+	</tr>
+	{% for shitja in shitjet %}
+	<tr>
+		<td><a href="{% url 'produkt_detail_url' shitja.product.product_id %}" target="">{{ shitja.product }}</a></td>
+		<td>{{ shitja.product.product_name }}</td>
+		<td>{{ shitja.product.product_desc }}</td>
+		<td>{{ shitja.shitje_quantity.normalize }}</td>
+		<td><span class="badge badge-secondary">{{ shitja.product.product_unit }}</span></td>
+		<td>{{ shitja.shitje_price }} €</td>
+		<td><b>{{ shitja.totali }} €</b></td>
+	</tr>
+
+	{% endfor %}
+
+	<tr class="table-success">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td><span class="">{{ fletpercjellja.get_total }}</span></td>
+	</tr>
+</table>
+
+<form method="post" class="form-group"> {% csrf_token %}
+	{{ form.fletpercjellja | as_crispy_field }}
+	{{ form.product | as_crispy_field }}
+	{{ form.shitje_quantity | as_crispy_field }}
+	{{ form.shitje_price | as_crispy_field }}
+	<button type="submit" class="btn btn-success">Shto Artikullin +</button>
+</form>
+
+<script>
+	$(document).ready(function () {
+		$('#id_product').selectize({
+			sortField: 'text'
+	  	});
+	});	
+	
+	document.getElementByName('fletpercjellja').style.color = "red";
+</script>
+
+{% endblock %} 

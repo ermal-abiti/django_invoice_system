@@ -1,0 +1,20 @@
+{% extends '../base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Krijo Produktin{% endblock %}
+
+
+{% block content %}
+
+<form method="post" class="form-group"> {% csrf_token %}
+	{{ form | crispy }}
+
+	{% if 'produkt_update' in request.path %}
+	<button type="submit" class="btn btn-warning">Update</button>
+	{% else %}
+	<button type="submit" class="btn btn-success">Shto Artikullin</button>
+	{% endif %}
+</form>
+
+{% endblock %}

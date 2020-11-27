@@ -1,0 +1,39 @@
+{% extends '../base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Artikujt{% endblock %}
+
+
+{% block content %}
+
+<h2>Artikujt</h2>
+<hr>
+
+
+<form method="POST" id="select-form" class="form-group">{% csrf_token %}
+	<select id="select" placeholder="Select a product" name="product" class="" onchange="this.form.submit()">
+		<option value="">Select a product...</option>
+		{% for produkt in produktet %}
+		<option value="{{ produkt.product_id }}">{{ produkt.product_id }}</option>
+		{% endfor %}
+	  
+	</select>
+</form>
+
+<ul>
+{% for produkt in produktet %}
+	<li><a href="{% url 'produkt_detail_url' produkt.product_id %}">{{ produkt.product_id }} - {{ produkt.product_name }} {{ produkt.product_desc }}</a></li>
+{% endfor %}
+</ul>
+
+<script>
+	$(document).ready(function () {
+		$('select').selectize({
+			sortField: 'text'
+	  	});
+	});	
+</script>
+
+
+{% endblock %} 
